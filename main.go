@@ -16,6 +16,7 @@ func main() {
 	gotype := flag.String("go-type", "", "name of the go type")
 	pkg := flag.String("pkg", "", "package of the go type")
 	zero := flag.String("zero", "", "zero value of go type")
+	dest := flag.String("destination", "", "destination package of type")
 	a := flag.String("a", "", "A value for testing")
 	b := flag.String("b", "", "B value for testing")
 	bb := flag.String("bb", "", "BB value for testing")
@@ -24,14 +25,15 @@ func main() {
 	opts := &maps.Options{
 		Maps: []maps.Map{
 			{
-				Name:    template.HTML(*name),
-				GoType:  template.HTML(*gotype),
-				Package: *pkg,
-				Zero:    template.HTML(*zero),
-				A:       template.HTML(*a),
-				B:       template.HTML(*b),
-				BB:      template.HTML(*bb),
-				C:       template.HTML(*c),
+				Destination: *dest,
+				Package:     *pkg,
+				Name:        template.HTML(*name),
+				GoType:      template.HTML(*gotype),
+				Zero:        template.HTML(*zero),
+				A:           template.HTML(*a),
+				B:           template.HTML(*b),
+				BB:          template.HTML(*bb),
+				C:           template.HTML(*c),
 			},
 		},
 	}
