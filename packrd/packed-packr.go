@@ -10,7 +10,7 @@ import (
 )
 
 var _ = func() error {
-	const gk = "__packr_global__"
+	const gk = "631cf35081ee6b4df02de6249df8aabb"
 	g := packr.New(gk, "")
 	hgr, err := resolver.NewHexGzip(map[string]string{
 		"56a843f683c28af8d3acb35582da637c": "1f8b08000000000000ff3ccd31aec2301084e17e4f314da4e415cf1700ae0015fd926c8885b1adf56e1121ee8e808876a4ff9bcae38daf825db747e6bbfc9fbe433fa03b10d95a05c76ab1e48666eaa3e1414008e069c25a5cd1cce7198ba8d0938842c099539cd804b6b0a16c39abc09bf32509cd9e47f4a55ac3dfc60fbfac1f20aa453f4f2ae69a91637aebaf000000ffff53d53da3af000000",
@@ -27,7 +27,7 @@ var _ = func() error {
 	g.DefaultResolver = hgr
 
 	func() {
-		b := packr.New("../new/templates", "../new/templates")
+		b := packr.New("genny:genny:new", "../new/templates")
 		b.SetResolver("-name-/-name-.go.plush", packr.Pointer{ForwardBox: gk, ForwardPath: "bb890f3a8aa56c497012afb45b9738ad"})
 		b.SetResolver("-name-/-name-_test.go.plush", packr.Pointer{ForwardBox: gk, ForwardPath: "be63988dd6aff95c2a1ff130f81faee9"})
 		b.SetResolver("-name-/options.go.plush", packr.Pointer{ForwardBox: gk, ForwardPath: "56a843f683c28af8d3acb35582da637c"})
@@ -36,7 +36,7 @@ var _ = func() error {
 	}()
 
 	func() {
-		b := packr.New("syncx:genny:maps", "../maps/templates")
+		b := packr.New("mapgen:genny:maps", "../maps/templates")
 		b.SetResolver("map.go.plush", packr.Pointer{ForwardBox: gk, ForwardPath: "7c769680f1cf4d85e0edda55f19d206c"})
 		b.SetResolver("map_test.go.plush", packr.Pointer{ForwardBox: gk, ForwardPath: "84b3d7fea8032bfe7d71ac6ea7677ddb"})
 	}()

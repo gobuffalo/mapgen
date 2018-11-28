@@ -3,9 +3,9 @@ package maps
 import (
 	"github.com/gobuffalo/flect/name"
 	"github.com/gobuffalo/genny"
-	"github.com/gobuffalo/genny/movinglater/plushgen"
 	"github.com/gobuffalo/packr/v2"
 	"github.com/gobuffalo/plush"
+	"github.com/gobuffalo/plushgen"
 	"github.com/pkg/errors"
 )
 
@@ -13,7 +13,7 @@ import (
 // implementations
 func New(opts *Options) (*genny.Group, error) {
 	gg := &genny.Group{}
-	box := packr.New("syncx:genny:maps", "../maps/templates")
+	box := packr.New("mapgen:genny:maps", "../maps/templates")
 
 	if err := opts.Validate(); err != nil {
 		return gg, errors.WithStack(err)
