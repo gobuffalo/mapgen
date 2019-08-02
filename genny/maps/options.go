@@ -14,7 +14,7 @@ func (opts *Options) Validate() error {
 	}
 
 	for _, m := range opts.Maps {
-		if err := m.Validate(); err != nil {
+		if err := (&m).Validate(); err != nil {
 			return err
 		}
 	}

@@ -1,8 +1,11 @@
 package maps
 
 import (
+	"fmt"
+
 	"github.com/gobuffalo/flect/name"
 	"github.com/gobuffalo/genny"
+	"github.com/gobuffalo/here"
 	"github.com/gobuffalo/packr/v2"
 	"github.com/gobuffalo/plush"
 	"github.com/gobuffalo/plushgen"
@@ -22,24 +25,39 @@ func New(opts *Options) (*genny.Group, error) {
 	for _, m := range opts.Maps {
 		g := genny.New()
 
-		for _, n := range []string{"map", "map_test"} {
-			n = n + ".go.plush"
-			s, err := box.FindString(n)
-			if err != nil {
-				return gg, errors.WithStack(err)
-			}
-			nm := name.New(string(m.Name))
-			if len(m.Name) == 0 {
-				nm = name.New(string(m.GoType))
-			}
-			n = nm.File().String() + "_" + n
-			g.File(genny.NewFileS(n, s))
+		if err := (&m).Validate(); err != nil {
+			return gg, err
 		}
 
-		ctx := plush.NewContext()
-		ctx.Set("opts", opts)
-		ctx.Set("m", m)
-		g.Transformer(plushgen.Transformer(ctx))
+		nm := name.New(m.Name)
+
+		s, err := box.FindString("map.go.plush")
+		if err != nil {
+			return gg, err
+		}
+
+		fn := fmt.Sprintf("%s.go.plush", nm.File())
+		tmpl := genny.NewFileS(fn, s)
+
+		g.RunFn(func(r *genny.Runner) error {
+			hi, err := here.Dir(r.Root)
+			if err != nil {
+				return err
+			}
+
+			ctx := plush.NewContext()
+			ctx.Set("opts", opts)
+			ctx.Set("m", m)
+			ctx.Set("here", hi)
+
+			tf := plushgen.Transformer(ctx)
+			f, err := tf.Transform(tmpl)
+			if err != nil {
+				return err
+			}
+			return r.File(f)
+		})
+
 		gg.Add(g)
 	}
 	return gg, nil
